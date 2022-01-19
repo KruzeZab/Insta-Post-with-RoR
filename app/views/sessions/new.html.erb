@@ -1,0 +1,19 @@
+<p id="alert"><%= alert %></p>
+<%= form_tag sessions_path do |form| %>
+  <div class="container">
+  <h4>Please login to continue</h4>
+  <hr>
+    <form>
+      <div class="mb-3">
+        <%= label_tag :email, 'Email Address', :class => 'form-label' %>
+        <%= text_field_tag :email, nil, :class => 'form-control' %>
+        <div class="form-text">We'll never share your email with anyone else.</div>
+      </div>
+      <div class="mb-3">
+        <%= label_tag :password, 'Password' %>
+        <%= password_field_tag :password, nil, :class => 'form-control' %>
+      </div>
+      <%= submit_tag "Login", :class => 'btn btn-primary' %>
+    </form>
+  </div>
+<% end %>

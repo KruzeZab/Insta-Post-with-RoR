@@ -1,0 +1,131 @@
+<div class="container">
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+  <% @posts.each do |post| %>
+    <div class="col">
+      <div class="card">
+        <div class="card-header my-card">
+          <h6 class="card-text p-1 d-flex">
+          <%= link_to post.user_name,  user_path(post.user_id), class: 'text-dark ' %>
+            
+
+            <% if current_user.present? %>
+            <% if current_user.id != post.user.id %>
+              <% if current_user.followees.include?(post.user) %>
+                <%= button_to "Unfollow", unfollow_user_path(post.user), method: "POST" %>
+                |
+              <% else %>
+              
+                <%= button_to "Follow", follow_user_path(post.user), method: "POST"  %>
+              <% end%>
+            <% end %>
+          <% end %>
+            
+          </h6>
+          <% if post.user == current_user %>
+            <div class="cta">
+            <%= link_to '<i class="fas fa-pen"></i>'.html_safe, edit_post_path(post.id), class: "card-link" %>
+            <%= link_to '<i class="fas fa-trash"></i>'.html_safe, post_path(post.id), method: :delete, class: "card-link" %>
+          </div>
+          <% end %>
+          
+        </div>
+        <%= image_tag post.photo, class:"card-img-top small-height"  %>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <span id="likes_container_<%= post.id %>">
+              <%= render partial: 'likes', locals: {post: post} %>
+            </span>
+          </li>
+          <li class="list-group-item">
+            <h5 class="card-title"><%= post.description %></h5>
+          </li>
+
+          <li class="list-group-item">
+            <% @comments.each do |comment| %>
+              <div class="d-flex justify-content-between">
+                <div class="wrapper">
+                  <%= comment.description %>  <br />
+                  
+              <span class="text-muted">&#8212; 
+              <%= link_to comment.user_name,  user_path(comment.user_id) %>
+              </span> 
+              <br />
+              </div>
+              <% if comment.user == current_user %>
+                <%= link_to '<i class="fas fa-trash"></i>'.html_safe, post_comment_path(post_id: post.id, id: comment.id), method: :delete %>
+              <% end %>
+              </div>
+              <hr />
+            <% end %>
+          </li>
+
+          <li class="list-group-item">
+            <% if current_user.present? %>
+              <%= simple_form_for Comment.new, url: post_comments_path(post), method: :post do |f| %>
+                <%= f.input :description, label: 'Comment', placeholder: 'Add a comment...' %>
+                <%= f.submit 'Comment', class: 'btn btn-primary btn-sm btn-block mt-2' %>
+              <% end %>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+  </div>
+</div>
+
+
+
+
+<div id="my-posts">
+  <%= render partial: 'post', locals: {posts: @posts} %>
+</div>
+
+
+<div id="infinite-scrolling">
+  <%= will_paginate @posts %>
+</div>
+
+
+<!--
+<% @posts.each do |post| %>
+  <% if post.user == current_user %>
+    <%= link_to 'Edit Post', edit_post_path(post.id) %>
+    <%= link_to 'Delete Post', post_path(post.id), method: :delete %>
+  <% end %>
+  <br />
+  
+  <br />
+  <%= image_tag post.photo %>
+  
+  <br />
+
+  <%= post.description %>
+
+  <span id="likes_container_<%= post.id %>">
+    <%= render partial: 'likes', locals: {post: post} %>
+  </span>
+
+  <br />
+  <br />
+  
+  <h4>All Comments</h4>
+
+  <% @comments.each do |comment| %>
+    <%= comment.description %>  <br />
+    &#8212; <%= comment.user.email %> <br />
+    <% if post.user == current_user %>
+      <%= link_to 'Delete', post_comment_path(post_id: post.id, id: comment.id), method: :delete %>
+    <% end %>
+    <hr />
+  <% end %>
+
+  <% if current_user.present? %>
+    <%= simple_form_for Comment.new, url: post_comments_path(post), method: :post do |f| %>
+      <%= f.input :description, label: 'Comment', placeholder: 'Add a comment...' %>
+      <%= f.submit 'Post', class: 'btn btn-primary btn-block' %>
+    <% end %>
+  <% end %>
+<% end %>
+
+-->

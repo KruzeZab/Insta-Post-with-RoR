@@ -1,16 +1,77 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Instapost</title>
+    <title>Share Your Photos Online - Instapost</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%= favicon_link_tag asset_path('favicon.ico') %>
+
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <%= javascript_pack_tag 'pagination.js' %>
+
   </head>
 
   <body>
+   
+    <!-- Navbar here -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
+  <div class="container mr-5">
+  
+    <a class="navbar-brand font-italic" href="#">InstaPost</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <!--
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        -->
+      </ul>
+      <form class="mr-5 ml-5">
+        <input class="form-control me-2" type="search" placeholder="Search">
+      </form>
+
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+
+      <% if current_user.present? %>
+      
+          <li class="nav-item mr-1">
+          <%= link_to 'New Post', new_post_path, class: 'nav-link' %>
+          
+        </li>
+        
+        <li class="nav-item">
+        <%= link_to 'Log Out', logout_path, class: 'nav-link text-underline' %>
+          
+        </li>
+
+      <% else %>
+        <li class="nav-item mr-1">
+          <%= link_to 'Log In', login_path, class: 'nav-link btn btn-primary btn-sm text-white' %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Sign Up', signup_path, class: 'nav-link text-underline' %>
+        </li>
+      <% end %>
+      </ul>
+
+      
+    </div>
+  </div>
+</nav>
+
+
     <%= yield %>
   </body>
 </html>

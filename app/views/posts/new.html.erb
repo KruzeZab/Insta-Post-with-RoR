@@ -1,0 +1,16 @@
+<div class="container">
+<h4>Add a New Post</h4>
+<hr />
+  <%= simple_form_for @post do |f| %>
+
+  <div class="mb-3">
+    <%= f.input :photo, input_html: { class: 'form-control' } %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.input :description, input_html: {class: 'form-control'} %>
+  </div>
+
+  <%= f.submit 'Post' %>
+<% end %>
+</div>

@@ -1,0 +1,52 @@
+<p id="notice"><%= notice %></p>
+
+<div class="container d-flex justify-content-center">
+    <div class="card" style="width: 100%">
+    <div class="card-body">
+    <div class="title-wrapper d-flex justify-content-between pb-2">
+      <h5 class="card-title">
+        <%= @user.email %>
+      </h5>
+      <div class="cta">
+      <% if current_user.present? %>
+        <% if current_user.id != @user.id %>
+          <% if current_user.followees.include?(@user) %>
+            <%= button_to "Unfollow", unfollow_user_path, method: "POST" %>
+            |
+          <% else %>
+            <%= button_to "Follow", follow_user_path, method: "POST"  %>
+          <% end%>
+        <% end %>
+      <% end %>
+      
+      </div>
+    </div>
+      
+      <p class="card-subtitle mb-2 text-muted">
+      <small class="text-muted">
+          <%= @user.followees.count %> Followings
+        </small>
+        |
+        <small class="text-muted">
+          <%= @user.followers.count %> Followers
+        </small>
+      </p>
+      <h4 class="card-text"><%= pluralize(@user.posts.count, 'posts') %></h4>
+
+<% @user.posts.each do |post| %>
+  <%= image_tag post.photo %>
+  <%= post.description %>
+  <hr />
+  
+<% end %>
+      
+    </div>
+  </div>
+</div>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+
